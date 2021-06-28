@@ -1,15 +1,92 @@
 let todos = [{
-    description: "Mi hermosa tarea",
+    description: "Comer",
     createdAt: "19/04/20",
+}, {
+    description: "Estudiar",
+    createdAt: "19/05/20",
+}, {
+    description: "Dormir",
+    createdAt: "19/06/20",
 }, ];
 
+let misTodos;
+
 const tareasPendientes = document.querySelector(".tareas-pendientes");
+const tareasTerminadas = document.querySelector(".tareas-terminadas");
+const form = document.querySelector('form');
+
+const d = new Date();
+const today = `${get(0)}/${get(1)}/${get(2)}`;
+
+function get(part) {
+    const formats = [
+        { day: "2-digit" },
+        { month: "2-digit" },
+        { year: "2-digit" }
+    ];
+    return new Intl.DateTimeFormat("es", formats[part]).format(d);
+}
+
+const botonAgregar = document.querySelector(".nueva-tarea button");
+
+window.addEventListener("load", () => {
+
+    botonAgregar.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        Promise.resolve()
+            .then(agregarTodo)
+            .then(actualizarStorage)
+
+        setTimeout(() => {
+            form.reset()
+        }, 100);
+
+    })
+
+
+    renderizarTodos();
+
+});
+
+function agregarTodo() {
+    const inputValue = document.querySelector(".nueva-tarea input").value.trim();
+    if (inputValue == 'clear') {
+        misTodos = [];
+    }
+
+    if (inputValue.length && inputValue != 'clear')
+        crearTodo(inputValue);
+}
+
+function crearTodo(inputValue) {
+
+    let todo = {
+        description: inputValue,
+        createdAt: today,
+    };
+
+    misTodos.push(todo);
+}
+
+function actualizarStorage() {
+    localStorage.setItem("todos", JSON.stringify(misTodos));
+
+    renderizarTodos();
+
+}
 
 function renderizarTodos() {
-    //  console.log("deberiamos renderizar todas las todos del array");
-    //for (let i = 0; i < listadoTodos.length; i++) {
-    todos.forEach((todo) => {
-        tareasPendientes.innerHTML += `<li class="tarea">
+
+    tareasPendientes.innerHTML = "";
+
+    misTodos = JSON.parse(localStorage.getItem("todos"));
+
+    if (misTodos === null) {
+        misTodos = [];
+    } else {
+        misTodos.forEach((todo) => {
+            tareasPendientes.innerHTML += `<li class="tarea">
             <div class="not-done"></div>
             <div class="descripcion">
             <p class="nombre">${todo.description}</p>
@@ -17,42 +94,23 @@ function renderizarTodos() {
             </div>
             </li>
             `;
-    })
-
-}
-
-
-function agregarTodo() {
-    const inputValue = document.querySelector('.nueva-tarea input').value.trim();
-    if (inputValue.length) {
-        console.log(...todos)
-        let nuevaLista = []
-        const todo = {
-            description: inputValue,
-            createdAt: (new Date(Date.now())).toLocaleDateString()
-        }
-        nuevaLista.push(todo);
-        todos = todos.concat(nuevaLista);
-        console.log(todos)
-
+        });
     }
+
 }
 
-
-const botonAgregar = document.querySelector('.nueva-tarea button');
-
-botonAgregar.addEventListener('click', function() {
-
-    agregarTodo();
-    setTimeout(() => {
-        renderizarTodos();
-    }, 4000);
-});
+function addTerminada() {
 
 
-renderizarTodos();
-
-
+    tareasTerminadas.innerHTML += `<li class="tarea">
+    <div class="not-done"></div>
+    <div class="descripcion">
+    <p class="nombre">${todo.description}</p>
+    <p class="timestamp">Creada: ${todo.createdAt}</p>
+    </div>
+    </li>
+    `;
+}
 /* 
 function getPosts(success, error) {
 var req = new XMLHttpRequest();
