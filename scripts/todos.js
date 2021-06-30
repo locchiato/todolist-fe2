@@ -3,7 +3,6 @@ let misTodosDone = [];
 
 const tareasPendientes = document.querySelector(".tareas-pendientes");
 const tareasTerminadas = document.querySelector(".tareas-terminadas");
-const form = document.querySelector('form');
 
 
 const botonAgregar = document.querySelector(".nueva-tarea button");
@@ -18,6 +17,7 @@ window.addEventListener("load", () => {
             .then(actualizarStorage)
             .then(renderizarTodos)
 
+        const form = document.querySelector('form');
         setTimeout(() => {
             form.reset()
         }, 100);
@@ -42,6 +42,12 @@ function agregarTodo() {
         crearTodo(inputValue);
 }
 
+function actualizarStorage() {
+    localStorage.setItem("todos", JSON.stringify(misTodos));
+    localStorage.setItem("todosDone", JSON.stringify(misTodosDone));
+
+}
+
 function crearLista(index) {
     if (index === 1) {
         crearTodo("Terminar mi sitio de To Dos.")
@@ -55,23 +61,6 @@ function crearLista(index) {
     }
 }
 
-function get(part) {
-    const formats = [
-        { day: "2-digit" },
-        { month: "2-digit" },
-        { year: "2-digit" }
-    ];
-    return new Intl.DateTimeFormat("es", formats[part]).format(new Date());
-}
-
-function getTodo(inputValue) {
-    const date = `${get(0)}/${get(1)}/${get(2)}`;
-    return {
-        description: inputValue,
-        createdAt: date,
-    };
-}
-
 function crearTodo(inputValue) {
     let todo = getTodo(inputValue);
     misTodos.push(todo);
@@ -82,10 +71,21 @@ function crearTodoDone(inputValue) {
     misTodosDone.push(todo);
 }
 
-function actualizarStorage() {
-    localStorage.setItem("todos", JSON.stringify(misTodos));
-    localStorage.setItem("todosDone", JSON.stringify(misTodosDone));
+function getTodo(inputValue) {
+    const date = `${get(0)}/${get(1)}/${get(2)}`;
+    return {
+        description: inputValue,
+        createdAt: date,
+    };
+}
 
+function get(part) {
+    const formats = [
+        { day: "2-digit" },
+        { month: "2-digit" },
+        { year: "2-digit" }
+    ];
+    return new Intl.DateTimeFormat("es", formats[part]).format(new Date());
 }
 
 function renderizarTodos() {
@@ -104,13 +104,6 @@ function cargarPendientes() {
     }
 }
 
-function renderizarPendientes(todos) {
-    tareasPendientes.innerHTML = "";
-    todos.forEach((todo) => {
-        addPendiente(todo)
-    });
-}
-
 function cargarTerminadas() {
     const todos = JSON.parse(localStorage.getItem("todosDone"));
 
@@ -120,6 +113,13 @@ function cargarTerminadas() {
         misTodosDone = todos;
         renderizarTerminadas(todos);
     }
+}
+
+function renderizarPendientes(todos) {
+    tareasPendientes.innerHTML = "";
+    todos.forEach((todo) => {
+        addPendiente(todo)
+    });
 }
 
 function renderizarTerminadas(todos) {
