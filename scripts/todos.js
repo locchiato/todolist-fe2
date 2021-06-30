@@ -1,31 +1,11 @@
-let todos = [{
-    description: "Comer",
-    createdAt: "19/04/20",
-}, {
-    description: "Estudiar",
-    createdAt: "19/05/20",
-}, {
-    description: "Dormir",
-    createdAt: "19/06/20",
-}, ];
+let misTodos = [];
 
-let misTodos;
+let listadoTodosTerminadas = [];
 
 const tareasPendientes = document.querySelector(".tareas-pendientes");
 const tareasTerminadas = document.querySelector(".tareas-terminadas");
 const form = document.querySelector('form');
 
-const d = new Date();
-const today = `${get(0)}/${get(1)}/${get(2)}`;
-
-function get(part) {
-    const formats = [
-        { day: "2-digit" },
-        { month: "2-digit" },
-        { year: "2-digit" }
-    ];
-    return new Intl.DateTimeFormat("es", formats[part]).format(d);
-}
 
 const botonAgregar = document.querySelector(".nueva-tarea button");
 
@@ -37,13 +17,13 @@ window.addEventListener("load", () => {
         Promise.resolve()
             .then(agregarTodo)
             .then(actualizarStorage)
+            .then(renderizarTodos)
 
         setTimeout(() => {
             form.reset()
         }, 100);
 
     })
-
 
     renderizarTodos();
 
@@ -55,15 +35,34 @@ function agregarTodo() {
         misTodos = [];
     }
 
-    if (inputValue.length && inputValue != 'clear')
+    if (inputValue == 'lista1') {
+        crearLista();
+    } else if (inputValue.length && inputValue != 'clear')
         crearTodo(inputValue);
+}
+
+function crearLista() {
+    crearTodo("Terminar mi sitio de To Dos.")
+    crearTodo("Estudiar.")
+    crearTodo("Bañar al perro.")
+}
+
+function get(part) {
+    const formats = [
+        { day: "2-digit" },
+        { month: "2-digit" },
+        { year: "2-digit" }
+    ];
+    return new Intl.DateTimeFormat("es", formats[part]).format(new Date());
 }
 
 function crearTodo(inputValue) {
 
+
+    const date = `${get(0)}/${get(1)}/${get(2)}`;
     let todo = {
         description: inputValue,
-        createdAt: today,
+        createdAt: date,
     };
 
     misTodos.push(todo);
@@ -72,20 +71,19 @@ function crearTodo(inputValue) {
 function actualizarStorage() {
     localStorage.setItem("todos", JSON.stringify(misTodos));
 
-    renderizarTodos();
-
 }
 
 function renderizarTodos() {
 
     tareasPendientes.innerHTML = "";
 
-    misTodos = JSON.parse(localStorage.getItem("todos"));
+    const todos = JSON.parse(localStorage.getItem("todos"));
 
-    if (misTodos === null) {
+    if (todos === null) {
         misTodos = [];
     } else {
-        misTodos.forEach((todo) => {
+        misTodos = todos;
+        todos.forEach((todo) => {
             tareasPendientes.innerHTML += `<li class="tarea">
             <div class="not-done"></div>
             <div class="descripcion">
