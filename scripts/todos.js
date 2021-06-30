@@ -36,16 +36,25 @@ function agregarTodo() {
     }
 
     if (inputValue == 'lista1') {
-        crearLista();
+        crearLista(1);
+    } else if (inputValue == 'lista2') {
+        crearLista(2);
     } else if (inputValue.length && inputValue != 'clear')
         crearTodo(inputValue);
 }
 
-function crearLista() {
-    crearTodo("Terminar mi sitio de To Dos.")
-    crearTodo("Estudiar.")
-    crearTodo("Bañar al perro.")
+function crearLista(index) {
+    if (index === 1) {
+        crearTodo("Terminar mi sitio de To Dos.")
+        crearTodo("Estudiar.")
+        crearTodo("Bañar al perro.")
+    } else {
+        crearTodo("Aprobar Front End I.")
+        crearTodo("Estudiar.")
+        crearTodo("Bañar al perro.")
+    }
 }
+
 
 function get(part) {
     const formats = [
