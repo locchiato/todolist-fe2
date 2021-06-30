@@ -50,6 +50,7 @@ function crearLista(index) {
     } else {
         crearTodo("Aprobar Front End I.")
         crearTodo("Estudiar.")
+        crearTodo("Alimentar a mis gatas.")
     }
 }
 
