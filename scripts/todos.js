@@ -1,6 +1,5 @@
 let misTodos = [];
-
-let listadoTodosTerminadas = [];
+let misTodosDone = [];
 
 const tareasPendientes = document.querySelector(".tareas-pendientes");
 const tareasTerminadas = document.querySelector(".tareas-terminadas");
@@ -50,7 +49,9 @@ function crearLista(index) {
     } else {
         crearTodo("Aprobar Front End I.")
         crearTodo("Estudiar.")
-        crearTodo("Alimentar a mis gatas.")
+        crearTodoDone("Alimentar a mis gatas.")
+        crearTodoDone("Estudiar.")
+        crearTodoDone("Estudiar.")
     }
 }
 
@@ -66,7 +67,6 @@ function get(part) {
 
 function crearTodo(inputValue) {
 
-
     const date = `${get(0)}/${get(1)}/${get(2)}`;
     let todo = {
         description: inputValue,
@@ -76,22 +76,37 @@ function crearTodo(inputValue) {
     misTodos.push(todo);
 }
 
+function crearTodoDone(inputValue) {
+
+    const date = `${get(0)}/${get(1)}/${get(2)}`;
+    let todo = {
+        description: inputValue,
+        createdAt: date,
+    };
+
+    misTodosDone.push(todo);
+}
+
 function actualizarStorage() {
     localStorage.setItem("todos", JSON.stringify(misTodos));
+    localStorage.setItem("todosDone", JSON.stringify(misTodosDone));
 
 }
 
 function renderizarTodos() {
 
     tareasPendientes.innerHTML = "";
+    tareasTerminadas.innerHTML = "";
 
     const todos = JSON.parse(localStorage.getItem("todos"));
+    const todosDone = JSON.parse(localStorage.getItem("todosDone"));
 
     if (todos === null) {
         misTodos = [];
     } else {
         misTodos = todos;
         todos.forEach((todo) => {
+
             tareasPendientes.innerHTML += `<li class="tarea">
             <div class="not-done"></div>
             <div class="descripcion">
@@ -103,11 +118,18 @@ function renderizarTodos() {
         });
     }
 
+    if (todosDone === null) {
+        misTodosDone = [];
+    } else {
+        misTodosDone = todosDone;
+        todosDone.forEach((todo) => {
+            addTerminada(todo)
+        });
+    }
+
 }
 
-function addTerminada() {
-
-
+function addTerminada(todo) {
     tareasTerminadas.innerHTML += `<li class="tarea">
     <div class="not-done"></div>
     <div class="descripcion">
