@@ -47,11 +47,9 @@ function crearLista(index) {
     if (index === 1) {
         crearTodo("Terminar mi sitio de To Dos.")
         crearTodo("Estudiar.")
-        crearTodo("Bañar al perro.")
     } else {
         crearTodo("Aprobar Front End I.")
         crearTodo("Estudiar.")
-        crearTodo("Bañar al perro.")
     }
 }
 
