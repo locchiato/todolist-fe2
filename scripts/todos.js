@@ -55,7 +55,6 @@ function crearLista(index) {
     }
 }
 
-
 function get(part) {
     const formats = [
         { day: "2-digit" },
@@ -65,25 +64,21 @@ function get(part) {
     return new Intl.DateTimeFormat("es", formats[part]).format(new Date());
 }
 
-function crearTodo(inputValue) {
-
+function getTodo(inputValue) {
     const date = `${get(0)}/${get(1)}/${get(2)}`;
-    let todo = {
+    return {
         description: inputValue,
         createdAt: date,
     };
+}
 
+function crearTodo(inputValue) {
+    let todo = getTodo(inputValue);
     misTodos.push(todo);
 }
 
 function crearTodoDone(inputValue) {
-
-    const date = `${get(0)}/${get(1)}/${get(2)}`;
-    let todo = {
-        description: inputValue,
-        createdAt: date,
-    };
-
+    let todo = getTodo(inputValue);
     misTodosDone.push(todo);
 }
 
@@ -94,39 +89,55 @@ function actualizarStorage() {
 }
 
 function renderizarTodos() {
+    cargarPendientes()
+    cargarTerminadas()
+}
 
-    tareasPendientes.innerHTML = "";
-    tareasTerminadas.innerHTML = "";
-
+function cargarPendientes() {
     const todos = JSON.parse(localStorage.getItem("todos"));
-    const todosDone = JSON.parse(localStorage.getItem("todosDone"));
 
     if (todos === null) {
         misTodos = [];
     } else {
         misTodos = todos;
-        todos.forEach((todo) => {
-
-            tareasPendientes.innerHTML += `<li class="tarea">
-            <div class="not-done"></div>
-            <div class="descripcion">
-            <p class="nombre">${todo.description}</p>
-            <p class="timestamp">${todo.createdAt}</p>
-            </div>
-            </li>
-            `;
-        });
+        renderizarPendientes(todos)
     }
+}
 
-    if (todosDone === null) {
+function renderizarPendientes(todos) {
+    tareasPendientes.innerHTML = "";
+    todos.forEach((todo) => {
+        addPendiente(todo)
+    });
+}
+
+function cargarTerminadas() {
+    const todos = JSON.parse(localStorage.getItem("todosDone"));
+
+    if (todos === null) {
         misTodosDone = [];
     } else {
-        misTodosDone = todosDone;
-        todosDone.forEach((todo) => {
-            addTerminada(todo)
-        });
+        misTodosDone = todos;
+        renderizarTerminadas(todos);
     }
+}
 
+function renderizarTerminadas(todos) {
+    tareasTerminadas.innerHTML = "";
+    todos.forEach((todo) => {
+        addTerminada(todo)
+    });
+}
+
+function addPendiente(todo) {
+    tareasPendientes.innerHTML += `<li class="tarea">
+    <div class="not-done"></div>
+    <div class="descripcion">
+    <p class="nombre">${todo.description}</p>
+    <p class="timestamp">${todo.createdAt}</p>
+    </div>
+    </li>
+    `;
 }
 
 function addTerminada(todo) {
@@ -139,35 +150,3 @@ function addTerminada(todo) {
     </li>
     `;
 }
-/* 
-function getPosts(success, error) {
-var req = new XMLHttpRequest();
-    req.open('GET', 'https://jsonplaceholder.typicode.com/posts');
-
-    req.onload = function() {
-      if (req.status == 200) {
-        success(JSON.parse(req.response));
-      }
-      else {
-        error();
-      }
-    };
-
-    req.send();
-}
-
-getPosts(
-    function(r) {
-        console.log(r)
-    },
-    function(r) {
-        console.log('Ocurrió un error')
-    },
-)
-<li class="tarea">
-        <div class="not-done"></div>
-        <div class="descripcion">
-          <p class="nombre">Mi hermosa tarea</p>
-          <p class="timestamp">Creada: 19/04/20</p>
-        </div>
-      </li> */
