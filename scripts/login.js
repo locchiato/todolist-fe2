@@ -1,54 +1,64 @@
 window.onload = function() {
 
     const form = document.querySelector('form');
-    const h1 = document.querySelector('form h1');
     const ulErrores = document.querySelector('#errores');
-    const errores = []
+    let errores = {};
+
 
     form.onsubmit = function(e) {
+        validarDatos();
 
-        if (!validarDatos()) {
+        if (Object.keys(errores).length !== 0) {
             e.preventDefault();
-            for (let i = 0; i < errores.length; i++) {
-                const error = errores[i];
-                ulErrores.innerHTML += `
-                    <li> 
-                    ${JSON.stringify(error)}
-                    </li>
-                `
-            }
+            for (const tipo in errores) 
+                    document.getElementById(`small-${tipo}`).innerHTML +=  `
+                    <small>${errores[tipo]}</small>
+                    `;
+        
+            errores = {};
+            
+        } else {
+            form.submit();
         }
+
     }
 
-    ulErrores.onclick = () => {
-        ulErrores.innerHTML = '';
-    }
 
+    function crearPropiedad(key, object) {
+        if(!object.hasOwnProperty(key))   object[key] = "";
+    }
 
     function validarDatos() {
-        let textos = document.querySelectorAll("input[type=text]");
-        let claves = document.querySelectorAll("input[type=password]");
+        const smalls = document.querySelectorAll('small');
+        for(let small of smalls)
+            small.innerHTML = '';
 
-        if (textos[0].value == "")
-            errores.push("El nombre es requerido.");
+        const [ nick, mail ] = document.querySelectorAll("input[type=text]");
+        
+        const [ pass, rePass ] = document.querySelectorAll("input[type=password]");
 
-        if (textos[0].value.length < 5)
-            errores.push("El nombre ingresado debe ser mas largo.");
+        if (nick.value.length < 5)
+            errores.nick = "El nick ingresado es muy corto.";
 
-        if (claves[0].value !== claves[1].value)
-            errores.push("Las claves no coinciden.")
+        if (nick.value == "")
+            errores.nick = "El nick es requerido. ";
+                    
+        if (pass.value.length < 5)
+            errores.pass = "La contraseña ingresada es muy corta.";
 
-        if (claves[0].value.length < 5)
-            errores.push("La clave ingresada debe ser mas larga.")
+        if (pass.value == "")
+            errores.pass = "La contraseña es requerida. ";
+        
+        if (pass.value !== rePass.value)
+            errores.rePass = "Las claves no coinciden.";
+            
 
-        if (textos[1].value.indexOf('@') == -1)
-            errores.push("El correo ingresado es invalido")
+        const mailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+        const testMail = mail.value.length === 0 || !mailRegExp.test(mail.value);
 
-
-        if (errores.length > 0)
-            return false
-
-        return true;
-
+        if (testMail)
+            errores['mail'] = "El correo ingresado es invalido.";
+ 
+        console.log(JSON.stringify(errores));
     }
 }

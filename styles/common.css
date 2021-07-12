@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400&display=swap');
 
 :root {
-  --primary: #7898FF;
-  --secondary: #8E64C5;
+  --primary: #6373a4;
+  --secondary: #c34f74;
+  --focus: #4ee760;
+  --text-color: #69b8c5;
+
+  --app-dark: #292931;
   --app-grey: #F2F2F2;
 }
 
@@ -21,3 +25,9 @@ button {
   border: none;
   border-radius: 3px;
 }
+
+/*
+  --primary: #7898FF;
+  #68ddf0;
+  --secondary: #8E64C5;
+*/

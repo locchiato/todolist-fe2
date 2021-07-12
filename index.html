@@ -11,33 +11,38 @@
 
 <body>
 
-    <form action="./lista-tareas.html" method="get">
+    <form action="./lista-tareas.html" method="GET">
         <h1>Nueva cuenta</h1>
-        <ul id="errores"></ul>
 
         <div class="image">
 
         </div>
 
-        <label>
-      Nombre:
-      <input type="text">
+    <label for="nick">
+      Nick:
+      <input id="nick" name="nick" type="text">
+      <small id="small-nick"></small>
     </label>
-        <label>
+
+    <label for="pass">
       Contraseña:
-      <input type="password">
+      <input id="pass" name="pass" type="password">
+      <small id="small-pass"></small>
     </label>
-        <label>
+    
+    <label for="rePass">
       Repetir contraseña:
-      <input type="password">
+      <input id="rePass" name="rePass" type="password">
+      <small id="small-rePass"></small>
     </label>
-        <label>
+
+    <label for="mail">
       Email:
-      <input type="text">
+      <input id="mail" name="mail" type="text">
+      <small id="small-mail"></small>
     </label>
-
-        <button>Crear Cuenta</button>
-
+    
+    <button>Crear Cuenta</button>
         <div class="form-footer">
             <p>ToDo</p>
         </div>
