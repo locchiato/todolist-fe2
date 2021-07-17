@@ -1,84 +1,103 @@
 @import url('./common.css');
-
 h1 {
-  color: var(--text-color);
-  font-weight: 300;
-  margin: 1em auto;
+    color: var(--text-color);
+    font-weight: 300;
+    margin: 1em auto;
 }
 
 body {
-  background-color: #21232d;
+    background-color: #21232d;
 }
 
 form {
-  position: relative;
-  width: 30em;
-  background-color: #282b37;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 0 calc(50% - 15em);
-  box-shadow: 0 5px 5px var(--secondary);
-  padding: 2em 4em;
-  box-sizing: border-box;
-  color: var(--text-color);
+    position: relative;
+    width: 30em;
+    background-color: #282b37;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 calc(50% - 15em);
+    box-shadow: 0 5px 5px var(--secondary);
+    padding: 2em 4em;
+    box-sizing: border-box;
+    color: var(--text-color);
 }
 
 form:after {
-  position: absolute;
-  content: '';
-  width: .7em;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: linear-gradient(var(--primary), var(--secondary));
+    position: absolute;
+    content: '';
+    width: .7em;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: linear-gradient(var(--primary), var(--secondary));
 }
 
 .image {
-  width: 9em;
-  border-radius: 50%;
-  background-color: var(--app-dark);
-  margin-bottom: 2em;
+    width: 9em;
+    border-radius: 50%;
+    background-color: var(--app-dark);
+    margin-bottom: 2em;
 }
 
 input {
-  width: 100%;
-  padding: .4em .5em;
-  background-color: var(--app-dark);
-  border: 1px solid var(--app-dark);
-  border-radius: .2em;
-  color: lightgray;
+    width: 100%;
+    padding: .4em .5em;
+    background-color: var(--app-dark);
+    border: 1px solid var(--app-dark);
+    border-radius: .2em;
+    color: lightgray;
 }
 
 input:focus {
-  color: var(--focus);
-  outline: none;
-  border: 1px solid var(--focus);
+    color: var(--focus);
+    outline: none;
+    border: 1px solid var(--focus);
 }
 
 label {
-  width: 100%;
-  font-weight: 400;
-  margin-bottom: -.1em;
-  margin-top: 1.5em;
+    width: 100%;
+    font-weight: 400;
+    margin-bottom: -.1em;
+    margin-top: 1.5em;
 }
 
 button {
-  padding: .3em 2em;
-  background-color: var(--primary);
-  color: lightgrey;
-  margin-top: 5em;
-  font-weight: 400;
-  font-size: 1em;
+    padding: .3em 2em;
+    background-color: var(--primary);
+    color: lightgrey;
+    margin-top: 5em;
+    font-weight: 400;
+    font-size: 1em;
 }
 
 .form-footer {
-  margin-top: auto;
-  color: grey;
-  font-size: 2em;
+    margin-top: auto;
+    color: grey;
+    font-size: 2em;
+}
+
+.crear-cuenta {
+    background-color: var(--secondary);
+    padding: .3em 2em;
+    color: white;
+    font-weight: 400;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5em;
+    text-decoration: none;
 }
 
 small {
-  color: lightcoral;
-  font-weight: bold;
+    color: lightcoral;
+    font-weight: bold;
+}
+
+p {
+    width: 100%;
+    font-weight: 300;
+    margin-bottom: 1em;
+    margin-top: 2em;
+    text-align: center;
 }

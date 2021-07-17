@@ -1,64 +1,87 @@
-window.onload = function() {
+window.addEventListener("load", function(event) {
 
-    const form = document.querySelector('form');
-    const ulErrores = document.querySelector('#errores');
+    if (sessionStorage.getItem("jwt")) {
+        window.location.href = "lista-tareas.html";
+    }
+    if (localStorage.getItem("email") && localStorage.getItem("password")) {
+        iniciarSesion(localStorage.getItem("email"), localStorage.getItem("password"));
+    }
+
+    const formLogin = document.querySelector("#formLogin");
+    const inputEmail = document.querySelector("#email");
+    const inputPassword = document.querySelector("#password");
+    const urlLogin = "https://ctd-todo-api.herokuapp.com/v1/users/login";
+
     let errores = {};
 
+    let status = null;
+    let erroresAPI = {};
 
-    form.onsubmit = function(e) {
-        validarDatos();
+    formLogin.addEventListener("submit", function(event) {
+        event.preventDefault();
+        let contador = 0;
+        /*   if(inputPassword.value.length < 8){
+               errores.passwordLength = "La contraseña debe tener al menos 8 caracteres.";
+               contador++;
+           }
+       */
+        //match(/[A-Z]/) devuelve un array si encuentra una mayúscula y null si no la encuentra
+        /*  if(inputPassword.value.match(/[A-Z]/)==null){
+              errores.passwordUpperCase = "La contraseña debe tener al menos una letra mayúscula.";
+              contador++;
+          }*/
 
-        if (Object.keys(errores).length !== 0) {
-            e.preventDefault();
-            for (const tipo in errores) 
-                    document.getElementById(`small-${tipo}`).innerHTML +=  `
-                    <small>${errores[tipo]}</small>
-                    `;
-        
-            errores = {};
-            
+        if (contador == 0) {
+            iniciarSesion(inputEmail.value, inputPassword.value);
         } else {
-            form.submit();
+            renderizarErrores();
         }
 
+
+    })
+
+    function iniciarSesion(emailUsuario, passwordUsuario) {
+        let datos = {
+            email: emailUsuario,
+            password: passwordUsuario
+        }
+        fetch(urlLogin, {
+                method: "POST",
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(datos)
+            })
+            .then(function(response) {
+                status = response.status;
+                console.log("status: ", status);
+                console.log("response primer then", response);
+                return response.json();
+            })
+            .then(function(responseAPI) {
+                console.log(responseAPI);
+                if (responseAPI.jwt) {
+                    sessionStorage.setItem("jwt", responseAPI.jwt);
+                    sessionStorage.setItem("email", inputEmail.value);
+                    window.location.href = "lista-tareas.html";
+                    // location.replace('/lista-tareas.html');
+
+                } else {
+                    alert(responseAPI);
+                }
+                /* if(status!=201){
+                   erroresAPI.mensaje = responseAPI;
+                // alert(responseAPI);
+                   console.log("status!=201", responseAPI);
+               }else{
+                   console.log("status==201", responseAPI);
+                   sessionStorage.setItem("jwt", responseAPI.jwt);
+                 //  window.location.href = "lista-tareas.html";
+                 location.replace('/lista-tareas.html');
+               }*/
+            })
+            .catch(function(error) {
+                console.log(error);
+            })
     }
 
 
-    function crearPropiedad(key, object) {
-        if(!object.hasOwnProperty(key))   object[key] = "";
-    }
-
-    function validarDatos() {
-        const smalls = document.querySelectorAll('small');
-        for(let small of smalls)
-            small.innerHTML = '';
-
-        const [ nick, mail ] = document.querySelectorAll("input[type=text]");
-        
-        const [ pass, rePass ] = document.querySelectorAll("input[type=password]");
-
-        if (nick.value.length < 5)
-            errores.nick = "El nick ingresado es muy corto.";
-
-        if (nick.value == "")
-            errores.nick = "El nick es requerido. ";
-                    
-        if (pass.value.length < 5)
-            errores.pass = "La contraseña ingresada es muy corta.";
-
-        if (pass.value == "")
-            errores.pass = "La contraseña es requerida. ";
-        
-        if (pass.value !== rePass.value)
-            errores.rePass = "Las claves no coinciden.";
-            
-
-        const mailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-        const testMail = mail.value.length === 0 || !mailRegExp.test(mail.value);
-
-        if (testMail)
-            errores['mail'] = "El correo ingresado es invalido.";
- 
-        console.log(JSON.stringify(errores));
-    }
-}
+})

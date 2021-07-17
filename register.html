@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/login.css">
+    <title>ToDo</title>
+</head>
+
+<body>
+
+    <form action="./lista-tareas.html" method="POST">
+        <h1>Nueva cuenta</h1>
+
+        <div class="image">
+
+        </div>
+
+        <label for="name">
+          Nombre:
+      <input id="name" name="name" type="text">
+      <small id="small-nick"></small>
+    </label>
+
+        <label for="pass">
+      Contraseña:
+      <input id="pass" name="pass" type="password">
+      <small id="small-pass"></small>
+    </label>
+
+        <label for="rePass">
+      Repetir contraseña:
+      <input id="rePass" name="rePass" type="password">
+      <small id="small-rePass"></small>
+    </label>
+
+        <label for="mail">
+      Email:
+      <input id="mail" name="mail" type="text">
+      <small id="small-mail"></small>
+    </label>
+
+        <button>Crear Cuenta</button>
+        <div class="form-footer">
+            <p>ToDo</p>
+        </div>
+    </form>
+
+    <script src="scripts/register.js"></script>
+</body>
+
+</html>
