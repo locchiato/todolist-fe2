@@ -3,128 +3,96 @@ let misTodosDone = [];
 
 const tareasPendientes = document.querySelector(".tareas-pendientes");
 const tareasTerminadas = document.querySelector(".tareas-terminadas");
-
-
 const botonAgregar = document.querySelector(".nueva-tarea button");
+const descripcion = document.querySelector(".nueva-tarea input");
+const formulario = document.querySelector('.nueva-tarea');
 
 window.addEventListener("load", () => {
+    pedirTodos();
 
     botonAgregar.addEventListener("click", function(event) {
         event.preventDefault();
 
         Promise.resolve()
             .then(agregarTodo)
-            .then(actualizarStorage)
             .then(renderizarTodos)
 
-        const form = document.querySelector('form');
         setTimeout(() => {
-            form.reset()
+            formulario.reset()
         }, 100);
 
     })
 
-    renderizarTodos();
+
+
+    setTimeout(() => {
+        renderizarTodos()
+    }, 500)
 
 });
 
+function pedirTodos() {
+    const urlPedirTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks";
+
+    fetch(urlPedirTareas, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": sessionStorage.getItem('jwt')
+            }
+        })
+        .then(res => res.json())
+        .then(manejarRespuesta);
+}
+
+function manejarRespuesta(respuesta) {
+    respuesta.forEach(tarea => {
+        const date = new Date(tarea.createdAt)
+        const todo = {
+            description: tarea.description,
+            createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`,
+        }
+        tarea.completed ? misTodosDone.push(todo) : misTodos.push(todo);
+    })
+}
+
 function agregarTodo() {
-    const inputValue = document.querySelector(".nueva-tarea input").value.trim();
-    if (inputValue == 'clear') {
-        misTodos = [];
-    }
-
-    if (inputValue == 'lista1') {
-        crearLista(1);
-    } else if (inputValue == 'lista2') {
-        crearLista(2);
-    } else if (inputValue.length && inputValue != 'clear')
-        crearTodo(inputValue);
+    if (descripcion.value.trim().length)
+        misTodos.push(getTodo());
 }
 
-function actualizarStorage() {
-    localStorage.setItem("todos", JSON.stringify(misTodos));
-    localStorage.setItem("todosDone", JSON.stringify(misTodosDone));
-
-}
-
-function crearLista(index) {
-    if (index === 1) {
-        crearTodo("Terminar mi sitio de To Dos.")
-        crearTodo("Estudiar.")
-    } else {
-        crearTodo("Aprobar Front End I.")
-        crearTodo("Estudiar.")
-        crearTodoDone("Alimentar a mis gatas.")
-        crearTodoDone("Estudiar.")
-        crearTodoDone("Estudiar.")
-    }
-}
-
-function crearTodo(inputValue) {
-    let todo = getTodo(inputValue);
-    misTodos.push(todo);
-}
-
-function crearTodoDone(inputValue) {
-    let todo = getTodo(inputValue);
-    misTodosDone.push(todo);
-}
-
-function getTodo(inputValue) {
-    const date = `${get(0)}/${get(1)}/${get(2)}`;
+function getTodo() {
+    const date = new Date();
     return {
-        description: inputValue,
-        createdAt: date,
+        description: descripcion.value.trim(),
+        createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`,
     };
 }
 
-function get(part) {
+function get(part, date) {
     const formats = [
         { day: "2-digit" },
         { month: "2-digit" },
         { year: "2-digit" }
     ];
-    return new Intl.DateTimeFormat("es", formats[part]).format(new Date());
+    return new Intl.DateTimeFormat("es", formats[part]).format(date);
 }
 
 function renderizarTodos() {
-    cargarPendientes()
-    cargarTerminadas()
+    renderizarPendientes()
+    renderizarTerminadas()
 }
 
-function cargarPendientes() {
-    const todos = JSON.parse(localStorage.getItem("todos"));
-
-    if (todos === null) {
-        misTodos = [];
-    } else {
-        misTodos = todos;
-        renderizarPendientes(todos)
-    }
-}
-
-function cargarTerminadas() {
-    const todos = JSON.parse(localStorage.getItem("todosDone"));
-
-    if (todos === null) {
-        misTodosDone = [];
-    } else {
-        misTodosDone = todos;
-        renderizarTerminadas(todos);
-    }
-}
-
-function renderizarPendientes(todos) {
+function renderizarPendientes() {
     tareasPendientes.innerHTML = "";
-    todos.forEach((todo) => {
+    misTodos.forEach((todo) => {
         addPendiente(todo)
     });
 }
 
-function renderizarTerminadas(todos) {
+function renderizarTerminadas() {
     tareasTerminadas.innerHTML = "";
-    todos.forEach((todo) => {
+    misTodosDone.forEach((todo) => {
         addTerminada(todo)
     });
 }
