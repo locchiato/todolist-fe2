@@ -1,5 +1,5 @@
 if (!sessionStorage.getItem("jwt")) {
-    window.location.href = "index.html";
+    window.location.href = "/index.html";
 }
 window.addEventListener("load", () => {
     let misTodos = [];
@@ -15,7 +15,7 @@ window.addEventListener("load", () => {
 
     document.querySelector("#logout").onclick = () => {
         sessionStorage.clear();
-        window.location.href = "index.html";
+        window.location.href = "/index.html";
     }
 
     Promise.resolve()
