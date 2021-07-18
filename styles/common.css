@@ -2,9 +2,10 @@
 :root {
     --primary: #7898FF;
     --secondary: #614481;
-    --app-grey: #262626;
+    --app-grey: #253255;
     --text-color: #69b8c5;
     --bg-form: #1c1c21;
+    --mi-cielo: url("../assets/micielo.png");
 }
 
 * {
@@ -14,7 +15,8 @@
 }
 
 body {
-    background-color: var(--app-grey);
+    background-image: var(--mi-cielo);
+    background-size: 200%;
     min-height: 100vh;
 }
 
