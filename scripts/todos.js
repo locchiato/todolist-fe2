@@ -1,14 +1,16 @@
 if (!sessionStorage.getItem("jwt")) {
     window.location.href = "/";
 }
-
-let misTodos = [];
-let misTodosDone = [];
 window.addEventListener("load", () => {
+    let misTodos = [];
+    let misTodosDone = [];
+
     const tareasPendientes = document.querySelector(".tareas-pendientes");
     const tareasTerminadas = document.querySelector(".tareas-terminadas");
     const descripcion = document.querySelector(".nueva-tarea input");
     const formulario = document.querySelector('.nueva-tarea');
+    const boton = document.querySelector("#agregarTarea");
+
     document.querySelector(".user-info p").innerHTML = sessionStorage.getItem('email').split('@')[0];
 
     document.querySelector("#logout").onclick = () => {
@@ -16,24 +18,41 @@ window.addEventListener("load", () => {
         window.location.href = "/";
     }
 
-    document.querySelector("#agregarTarea").onclick = () => {
-        e.preventDefault();
+    Promise.resolve()
+        .then(pedirTodos)
+        .then(renderizarTodos)
+        .then(updateEventos);
 
+    boton.onclick = (e) => {
+        e.preventDefault();
         Promise.resolve()
             .then(agregarTodo)
             .then(renderizarTodos)
+            .then(updateEventos);
 
         setTimeout(() => {
             formulario.reset()
         }, 100);
     }
 
-    pedirTodos();
+    function updateEventos() {
+        const ndPendientes = document.querySelectorAll('.tareas-pendientes .not-done');
+        ndPendientes.forEach(nd => {
+            nd.addEventListener('click', () => {
+                tareasTerminadas.appendChild(nd.parentElement);
+                updateEventos();
+            })
+        });
 
-    setTimeout(() => {
-        renderizarTodos()
-    }, 500)
+        const ndTerminadas = document.querySelectorAll('.tareas-terminadas .not-done');
+        ndTerminadas.forEach(nd => {
+            nd.addEventListener('click', () => {
+                tareasPendientes.appendChild(nd.parentElement);
+                updateEventos();
+            })
+        });
 
+    }
 
     function pedirTodos() {
         const urlPedirTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks";
@@ -54,10 +73,11 @@ window.addEventListener("load", () => {
             const date = new Date(tarea.createdAt)
             const todo = {
                 description: tarea.description,
-                createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`,
+                createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`
             }
             tarea.completed ? misTodosDone.push(todo) : misTodos.push(todo);
         })
+
     }
 
     function agregarTodo() {
@@ -69,7 +89,7 @@ window.addEventListener("load", () => {
         const date = new Date();
         return {
             description: descripcion.value.trim(),
-            createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`,
+            createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`
         };
     }
 

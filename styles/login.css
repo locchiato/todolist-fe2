@@ -11,7 +11,7 @@ form {
     position: relative;
     /* height: 100vh;*/
     width: 30em;
-    background-color: var(--background-form);
+    background-color: var(--bg-form);
     display: flex;
     align-items: center;
     flex-direction: column;

@@ -2,8 +2,7 @@ if (sessionStorage.getItem("jwt")) {
     window.location.href = "lista-tareas.html";
 }
 
-
-window.addEventListener("load", function(event) {
+window.addEventListener("load", function() {
     const formLogin = document.querySelector("#formLogin");
     const inputEmail = document.querySelector("#email");
     const inputPassword = document.querySelector("#password");
@@ -14,33 +13,29 @@ window.addEventListener("load", function(event) {
     })
 
 
-})
-
-function iniciarSesion(emailUsuario, passwordUsuario) {
-    const urlLogin = "https://ctd-todo-api.herokuapp.com/v1/users/login";
-    const datos = {
-        email: emailUsuario,
-        password: passwordUsuario
+    function iniciarSesion(emailUsuario, passwordUsuario) {
+        const urlLogin = "https://ctd-todo-api.herokuapp.com/v1/users/login";
+        const datos = {
+            email: emailUsuario,
+            password: passwordUsuario
+        }
+        fetch(urlLogin, {
+                method: "POST",
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify(datos)
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(responseAPI) {
+                if (responseAPI.jwt) {
+                    sessionStorage.setItem("jwt", responseAPI.jwt);
+                    sessionStorage.setItem("email", emailUsuario);
+                    window.location.href = "lista-tareas.html";
+                } else {
+                    alert(responseAPI);
+                }
+            })
     }
-    fetch(urlLogin, {
-            method: "POST",
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify(datos)
-        })
-        .then(function(response) {
-            return response.json();
-        })
-        .then(function(responseAPI) {
-            console.log(responseAPI);
-            if (responseAPI.jwt) {
-                sessionStorage.setItem("jwt", responseAPI.jwt);
-                sessionStorage.setItem("email", emailUsuario);
-                window.location.href = "lista-tareas.html";
-            } else {
-                alert(responseAPI);
-            }
-        })
-        .catch(function(error) {
-            console.log(error);
-        })
-}
+
+})

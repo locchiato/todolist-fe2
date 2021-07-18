@@ -54,12 +54,7 @@ window.onload = function() {
     }
 
     function validarDatos() {
-
-        const inputFirstName = document.querySelector("#firstName");
-        const inputLastName = document.querySelector("#lastName");
-        const inputPassword = document.querySelector("#password");
         const inputRePassword = document.querySelector("#repassword");
-        const inputEmail = document.querySelector("#email");
 
         const smalls = document.querySelectorAll("small");
         for (let small of smalls) small.innerHTML = "";

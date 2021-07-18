@@ -2,7 +2,7 @@
 header {
     display: flex;
     background: linear-gradient(90deg, var(--primary), var(--secondary));
-    box-shadow: 0px 3px 5px lightgrey;
+    box-shadow: 0px 3px 5px var(--secondary);
     padding: 0 3em;
     margin-bottom: 2em;
 }
@@ -24,7 +24,7 @@ a {
 }
 
 a:hover {
-    border-bottom: .2em solid violet;
+    border-bottom: .2em solid var(--secondary);
 }
 
 .user-info {
@@ -54,11 +54,11 @@ a:hover {
     position: relative;
     display: flex;
     align-items: center;
-    background-color: white;
+    background-color: var(--bg-form);
     width: 80%;
     margin: 0 10%;
     padding: 1em;
-    box-shadow: 2px 2px 10px lightgrey;
+    box-shadow: 2px 2px 10px var(--secondary);
     border-radius: .2em;
     z-index: 20;
 }
@@ -70,19 +70,21 @@ a:hover {
     border-radius: 0;
     padding: .3em;
     font-size: 1.1em;
+    background-color: var(--bg-form);
 }
 
 .nueva-tarea input:focus {
+    color: var(--primary);
     outline: none;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid var(--primary);
 }
 
 .nueva-tarea input::placeholder {
-    color: rgb(197, 197, 197);
     text-indent: .2em;
 }
 
 #agregarTarea {
+    color: lightgrey;
     opacity: .5;
     background-color: transparent;
 }
@@ -94,13 +96,14 @@ a:hover {
 }
 
 #agregarTarea:hover {
+    color: var(--primary);
     opacity: 1;
 }
 
 .not-done {
     width: 2em;
     height: 2em;
-    background-color: var(--app-grey);
+    background-color: var(--bg-form);
     margin-right: 1em;
     border-radius: 50%;
     cursor: pointer;
@@ -127,8 +130,8 @@ a:hover {
     position: relative;
     height: 1.5em;
     width: 1.5em;
-    background-color: white;
-    box-shadow: 2px 2px 5px lightgrey;
+    background-color: var(--bg-form);
+    box-shadow: 2px 2px 5px var(--secondary);
     border: 2px solid var(--secondary);
     z-index: 2;
     transition: background-color 200ms linear;
@@ -165,9 +168,9 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     flex: 1;
-    background-color: white;
+    background-color: var(--bg-form);
     padding: 1em 2em;
-    box-shadow: 2px 2px 5px lightgrey;
+    box-shadow: 2px 2px 5px var(--secondary);
 }
 
 .tarea .nombre {
@@ -204,7 +207,7 @@ a:hover {
     width: 8em;
     text-align: center;
     padding: .5em 1em;
-    background-color: var(--app-grey);
+    background-color: var(--bg-form);
     border-radius: .2em;
     box-shadow: 3px 3px 5px 5px var(--secondary);
     color: var(--primary);
@@ -223,7 +226,7 @@ a:hover {
 }
 
 .tareas-terminadas .not-done {
-    background-color: lightgrey;
+    background-color: var(--bg-form);
     border-color: grey;
 }
 
@@ -233,7 +236,7 @@ a:hover {
 }
 
 .tareas-terminadas .tarea .descripcion {
-    background-color: rgb(228, 228, 228);
+    background-color: var(--bg-form);
 }
 
 .tareas-terminadas .tarea .descripcion .nombre {
