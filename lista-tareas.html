@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="./styles/lista-tareas.css">
+    <script src="./scripts/todos.js"></script>
     <title>ToDo</title>
 </head>
 
@@ -15,6 +16,7 @@
     <header>
         <nav>
             <a href="/">My ToDo's</a>
+            <a id="logout">Cerrar sesión</a>
         </nav>
 
         <div class="user-info">
@@ -27,7 +29,7 @@
     <form class="nueva-tarea">
         <div class="not-done "></div>
         <input type="text" placeholder="Nueva tarea">
-        <button>
+        <button id="agregarTarea">
         <i class="fas fa-plus-circle agregar"></i>
     </button>
     </form>
@@ -42,7 +44,6 @@
 
     </ul>
 
-    <script src="./scripts/todos.js"></script>
 </body>
 
 </html>

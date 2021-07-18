@@ -1,18 +1,19 @@
 window.onload = function() {
 
+    const inputFirstName = document.querySelector("#firstName");
+    const inputLastName = document.querySelector("#lastName");
+    const inputPassword = document.querySelector("#password");
+    const inputEmail = document.querySelector("#email");
     const form = document.querySelector("#formRegister");
 
     let errores = {};
-    let data = {};
-
-    let url = "https://ctd-todo-api.herokuapp.com/v1/users";
+    let usuario = {};
 
     form.onsubmit = function(e) {
-
+        e.preventDefault();
         validarDatos();
 
         if (Object.keys(errores).length !== 0) {
-            e.preventDefault();
             for (const tipo in errores)
                 document.getElementById(`small-${tipo}`).innerHTML += `
                     ${errores[tipo]}
@@ -20,49 +21,36 @@ window.onload = function() {
 
             errores = {};
         } else {
-            cargarDatos();
-
-            setTimeout(() => {
-
-
-                fetch(url, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            "firstName": "Leandro",
-                            "lastName": "Occhiato",
-                            "email": "locchiato16@gmail.com",
-                            "password": "CLaveFalsa*123"
-                        })
-                    })
-                    .then((res) => res.json())
-                    .catch((error) => console.error("Error:", error))
-                    .then((response) => {
-                        console.log("mi respuesta:" + response)
-
-                    });
-
-            }, 1000);
-            window.location.href = "lista-tareas.html";
+            registrarUsuario(inputFirstName.value, inputLastName.value, inputEmail.value, inputPassword.value);
         }
     };
 
-    function cargarDatos() {
-        const inputFirstName = document.querySelector("#firstName");
-        const inputLastName = document.querySelector("#lastName");
-        const inputPassword = document.querySelector("#password");
-        const inputEmail = document.querySelector("#email");
+    function registrarUsuario(nombre, apellido, email, clave) {
+        const usuario = {
+            firstName: nombre,
+            lastName: apellido,
+            email: email,
+            password: clave
+        }
 
-        data.firstName = inputFirstName.value;
-        data.lastName = inputLastName.value;
-        data.email = inputEmail.value;
-        data.password = inputPassword.value;
-    }
+        const urlRegister = "https://ctd-todo-api.herokuapp.com/v1/users";
 
-    function crearPropiedad(key, object) {
-        if (!object.hasOwnProperty(key)) object[key] = "";
+        fetch(urlRegister, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(usuario)
+            })
+            .then((res) => res.json())
+            .then((responseAPI) => {
+                if (responseAPI.jwt) {
+                    sessionStorage.setItem("jwt", responseAPI.jwt);
+                    sessionStorage.setItem("email", usuario.email);
+                    window.location.href = "lista-tareas.html";
+                } else {
+                    alert(responseAPI);
+                }
+            });
+
     }
 
     function validarDatos() {
@@ -100,6 +88,5 @@ window.onload = function() {
 
         if (testMail) errores.mail = "El correo ingresado es invalido.";
 
-        console.log(JSON.stringify(errores));
     }
 };

@@ -1,22 +1,25 @@
 @import url('./common.css');
 h1 {
-    color: var(--text-color);
+    color: rgb(116, 116, 116);
     font-weight: 300;
-    margin: 1em auto;
+    /* margin-top: 1em;
+  margin-bottom: 4em;*/
 }
 
 form {
+    color: var(--primary);
     position: relative;
+    /* height: 100vh;*/
     width: 30em;
-    background-color: #282b37;
+    background-color: var(--background-form);
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin: 0 calc(50% - 15em);
+    margin: 2em calc(50% - 15em);
+    /*margin: 2em auto;*/
     box-shadow: 0 5px 5px var(--secondary);
     padding: 2em 4em;
     box-sizing: border-box;
-    color: var(--text-color);
 }
 
 form:after {
@@ -30,30 +33,30 @@ form:after {
 }
 
 .image {
+    height: 9em;
     width: 9em;
     border-radius: 50%;
-    background-color: var(--app-dark);
+    background-color: var(--app-grey);
     margin-bottom: 2em;
 }
 
 input {
+    color: lightgray;
     width: 100%;
     padding: .4em .5em;
-    background-color: var(--app-dark);
-    border: 1px solid var(--app-dark);
+    background-color: var(--app-grey);
+    border: 1px solid var(--app-grey);
     border-radius: .2em;
-    color: lightgray;
 }
 
 input:focus {
-    color: var(--focus);
     outline: none;
-    border: 1px solid var(--focus);
+    border: 1px solid var(--secondary);
 }
 
 label {
     width: 100%;
-    font-weight: 400;
+    font-weight: 300;
     margin-bottom: -.1em;
     margin-top: 1.5em;
 }
@@ -61,16 +64,11 @@ label {
 button {
     padding: .3em 2em;
     background-color: var(--primary);
-    color: lightgrey;
+    color: white;
     margin-top: 5em;
     font-weight: 400;
     font-size: 1em;
-}
-
-.form-footer {
-    margin-top: auto;
-    color: grey;
-    font-size: 2em;
+    cursor: pointer;
 }
 
 .crear-cuenta {
@@ -85,9 +83,10 @@ button {
     text-decoration: none;
 }
 
-small {
-    color: lightcoral;
-    font-weight: bold;
+.form-footer {
+    margin-top: 1em;
+    color: grey;
+    font-size: 2em;
 }
 
 p {
@@ -96,4 +95,9 @@ p {
     margin-bottom: 1em;
     margin-top: 2em;
     text-align: center;
+}
+
+small {
+    color: var(--secondary);
+    font-style: italic;
 }

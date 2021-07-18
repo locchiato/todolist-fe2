@@ -7,13 +7,24 @@ header {
     margin-bottom: 2em;
 }
 
+header nav {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-right: 1em;
+}
+
 a {
     display: block;
     width: fit-content;
     padding: .7em 1em;
-    border-bottom: .2em solid white;
     text-decoration: none;
+    border-bottom: .2em solid white;
     color: white
+}
+
+a:hover {
+    border-bottom: .2em solid violet;
 }
 
 .user-info {
@@ -71,7 +82,7 @@ a {
     text-indent: .2em;
 }
 
-.nueva-tarea button {
+#agregarTarea {
     opacity: .5;
     background-color: transparent;
 }
@@ -82,7 +93,7 @@ a {
     margin-left: .5em;
 }
 
-.nueva-tarea button:hover {
+#agregarTarea:hover {
     opacity: 1;
 }
 
@@ -193,10 +204,10 @@ a {
     width: 8em;
     text-align: center;
     padding: .5em 1em;
-    background-color: white;
+    background-color: var(--app-grey);
     border-radius: .2em;
-    box-shadow: 3px 3px 5px lightgrey;
-    color: rgb(170, 170, 170);
+    box-shadow: 3px 3px 5px 5px var(--secondary);
+    color: var(--primary);
     font-weight: 400;
     font-size: 1.1em;
     margin-left: calc(15% - 4em);
