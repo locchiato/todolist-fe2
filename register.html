@@ -6,43 +6,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles/login.css">
-    <title>ToDo</title>
+    <title>Registro - ToDo</title>
 </head>
 
 <body>
 
-    <form action="./lista-tareas.html" method="POST">
+    <form method="POST" id="formRegister">
         <h1>Nueva cuenta</h1>
 
-        <div class="image">
+        <!-- <div class="image"></div> -->
 
-        </div>
-
-        <label for="name">
-          Nombre:
-      <input id="name" name="name" type="text">
-      <small id="small-nick"></small>
+        <label>
+      Nombre:
+      <input id="firstName" type="text" name="firstName">
+      <small id="small-firstName"></small>
     </label>
-
-        <label for="pass">
+        <label>
+      Apellido:
+      <input id="lastName" type="text" name="lastName">
+      <small id="small-lastName"></small>
+    </label>
+        <label>
       Contraseña:
-      <input id="pass" name="pass" type="password">
+      <input id="password" type="password" name="password">
       <small id="small-pass"></small>
     </label>
-
-        <label for="rePass">
+        <label>
       Repetir contraseña:
-      <input id="rePass" name="rePass" type="password">
+      <input id="repassword" type="password" name="repassword">
       <small id="small-rePass"></small>
     </label>
-
-        <label for="mail">
+        <label>
       Email:
-      <input id="mail" name="mail" type="text">
+      <input id="email" type="email" name="email">
       <small id="small-mail"></small>
     </label>
 
-        <button>Crear Cuenta</button>
+        <button type="submit">Crear Cuenta</button>
+
         <div class="form-footer">
             <p>ToDo</p>
         </div>

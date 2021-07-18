@@ -23,8 +23,6 @@ window.addEventListener("load", () => {
 
     })
 
-
-
     setTimeout(() => {
         renderizarTodos()
     }, 500)
