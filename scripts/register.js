@@ -59,12 +59,12 @@ window.onload = function() {
         const smalls = document.querySelectorAll("small");
         for (let small of smalls) small.innerHTML = "";
 
-        if (inputFirstName.value.length < 5)
+        if (inputFirstName.value.length < 3)
             errores.firstName = "El nombre ingresado es muy corto.";
 
         if (inputFirstName.value == "") errores.firstName = "El nombre es requerido. ";
 
-        if (inputLastName.value.length < 5)
+        if (inputLastName.value.length < 2)
             errores.lastName = "El apellido ingresado es muy corto.";
 
         if (inputLastName.value == "") errores.lastName = "El apellido es requerido. ";

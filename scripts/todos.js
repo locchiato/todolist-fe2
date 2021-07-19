@@ -38,16 +38,23 @@ window.addEventListener("load", () => {
     function updateEventos() {
         const ndPendientes = document.querySelectorAll('.tareas-pendientes .not-done');
         ndPendientes.forEach(nd => {
+
+            // cuando se ejecuta el siguiente evento cambia la tarea a la otra lista
             nd.addEventListener('click', () => {
                 tareasTerminadas.appendChild(nd.parentElement);
+                // llamo denuevo a updateEventos() para que la nueva tarea tenga el evento de click
                 updateEventos();
+
             })
         });
 
         const ndTerminadas = document.querySelectorAll('.tareas-terminadas .not-done');
         ndTerminadas.forEach(nd => {
+
+            // cuando se ejecuta el siguiente evento cambia la tarea a la otra lista
             nd.addEventListener('click', () => {
                 tareasPendientes.appendChild(nd.parentElement);
+                // llamo denuevo a updateEventos() para que la nueva tarea tenga el evento de click
                 updateEventos();
             })
         });
