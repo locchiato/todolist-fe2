@@ -80,7 +80,7 @@ window.addEventListener("load", () => {
             const date = new Date(tarea.createdAt)
             const todo = {
                 description: tarea.description,
-                createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`
+                createdAt: date.toLocaleDateString()
             }
             tarea.completed ? misTodosDone.push(todo) : misTodos.push(todo);
         })
@@ -96,18 +96,18 @@ window.addEventListener("load", () => {
         const date = new Date();
         return {
             description: descripcion.value.trim(),
-            createdAt: `${get(0, date)}/${get(1, date)}/${get(2, date)}`
+            createdAt: date.toLocaleDateString()
         };
     }
-
-    function get(part, date) {
-        const formats = [
-            { day: "2-digit" },
-            { month: "2-digit" },
-            { year: "2-digit" }
-        ];
-        return new Intl.DateTimeFormat("es", formats[part]).format(date);
-    }
+    /* 
+        function get(part, date) {
+            const formats = [
+                { day: "2-digit" },
+                { month: "2-digit" },
+                { year: "2-digit" }
+            ];
+            return new Intl.DateTimeFormat("es", formats[part]).format(date);
+        } */
 
     function renderizarTodos() {
         renderizarPendientes()
