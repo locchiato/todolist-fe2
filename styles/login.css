@@ -59,24 +59,18 @@ label {
 }
 
 button {
-    padding: .3em 2em;
+    padding: .5em 3em;
     background-color: var(--primary);
-    color: white;
+    color: var(--app-grey);
     margin-top: 2em;
     font-weight: 400;
     font-size: 1em;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.crear-cuenta {
-    background-color: var(--secondary);
-    padding: .5em 3em;
-    color: white;
-    font-weight: 400;
-    margin-top: 2em;
-    font-size: 1em;
-    border-radius: 5px;
-    text-decoration: none;
+input:-webkit-autofill {
+    transition-delay: 3600s;
 }
 
 .form-header {
@@ -97,4 +91,10 @@ p {
 small {
     color: var(--secondary);
     font-style: italic;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    text-shadow: 2px 2px 2px var(--app-grey);
 }
