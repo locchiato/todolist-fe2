@@ -26,7 +26,7 @@
 
 
     <form class="nueva-tarea">
-        <div class="borrar-todas" title="Limpiar"></div>
+        <div class="borrarTareas" title="Limpiar"></div>
         <input type="text" placeholder="Nueva tarea">
         <button id="agregarTarea">
         <i class="fas fa-plus-circle agregar"></i>
@@ -36,6 +36,29 @@
 
     <ul class="tareas-pendientes">
 
+        <div id="skeleton">
+            <li class="tarea">
+                <div class="not-done"></div>
+                <div class="descripcion">
+                    <p class="nombre">Nueva tarea</p>
+                    <p class="timestamp">Creada: 15/07/21</p>
+                </div>
+            </li>
+            <li class="tarea">
+                <div class="not-done"></div>
+                <div class="descripcion">
+                    <p class="nombre">Nueva tarea</p>
+                    <p class="timestamp">Creada: 15/07/21</p>
+                </div>
+            </li>
+            <li class="tarea">
+                <div class="not-done"></div>
+                <div class="descripcion">
+                    <p class="nombre">Nueva tarea</p>
+                    <p class="timestamp">Creada: 15/07/21</p>
+                </div>
+            </li>
+        </div>
     </ul>
 
     <h2 class="titulo-terminadas">Tareas terminadas</h2>

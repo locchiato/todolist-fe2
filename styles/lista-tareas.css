@@ -47,6 +47,16 @@ a:hover {
     margin-left: .7em;
 }
 
+#closeApp {
+    margin-left: 15px;
+    font-size: .7em;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 50vh;
+    padding: 3px;
+    cursor: pointer;
+}
+
 
 /* Nueva tarea ----------------------------------------------------------- */
 
@@ -101,7 +111,7 @@ a:hover {
 }
 
 .not-done,
-.borrar-todas {
+.borrarTareas {
     width: 2em;
     height: 2em;
     background-color: var(--bg-form);
@@ -132,14 +142,14 @@ a:hover {
     height: 1.5em;
     width: 1.5em;
     background-color: var(--bg-form);
-    box-shadow: 2px 2px 5px var(--secondary);
+    box-shadow: 2px 2px 5px var(--app-grey);
     border: 2px solid var(--secondary);
     z-index: 2;
     transition: background-color 200ms linear;
 }
 
 .tarea .not-done:hover {
-    background-color: var(--secondary);
+    background-color: var(--app-grey);
 }
 
 .tarea:first-child .not-done::before {
@@ -171,11 +181,11 @@ a:hover {
     flex: 1;
     background-color: var(--bg-form);
     padding: 1em 2em;
-    box-shadow: 2px 2px 5px var(--secondary);
+    box-shadow: 2px 2px 5px var(--app-grey);
 }
 
 .tarea .nombre {
-    color: rgb(95, 95, 95);
+    color: lightslategray;
 }
 
 .tarea .timestamp {
@@ -188,8 +198,8 @@ a:hover {
     position: relative;
     height: 1.5em;
     width: 1.5em;
-    background-color: white;
-    box-shadow: 2px 2px 5px lightgrey;
+    background-color: var(--bg-form);
+    box-shadow: 2px 2px 5px var(--app-grey);
     border: 2px solid var(--secondary);
     z-index: 2;
     transition: background-color 200ms linear;
@@ -197,7 +207,7 @@ a:hover {
 }
 
 .tarea .remove:hover {
-    background-color: var(--secondary);
+    background-color: var(--app-grey);
 }
 
 
@@ -243,4 +253,30 @@ a:hover {
 .tareas-terminadas .tarea .descripcion .nombre {
     color: grey;
     text-decoration: line-through;
+}
+
+#skeleton .descripcion {
+    background-color: var(--app-grey);
+}
+
+#skeleton p {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+#skeleton .not-done {
+    background-color: var(--app-grey);
+}
+
+#skeleton {
+    animation: trasparencia 1s infinite;
+}
+
+@keyframes trasparencia {
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0.8;
+    }
 }

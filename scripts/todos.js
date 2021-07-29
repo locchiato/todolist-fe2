@@ -12,7 +12,7 @@ fetch(urlUsuario, {
     })
     .then(res => res.json())
     .then(user => {
-        document.querySelector(".user-info p").innerHTML = `${user.firstName} ${user.lastName}`;
+        document.querySelector(".user-info p").innerText = `${user.firstName} ${user.lastName}`;
 
     })
 
@@ -20,95 +20,17 @@ window.addEventListener("load", () => {
 
     const tareasPendientes = document.querySelector(".tareas-pendientes");
     const tareasTerminadas = document.querySelector(".tareas-terminadas");
-    const descripcion = document.querySelector(".nueva-tarea input");
+    const nuevaTarea = document.querySelector(".nueva-tarea input");
     const formulario = document.querySelector('.nueva-tarea');
     const boton = document.querySelector("#agregarTarea");
-    const borrar = document.querySelector(".borrar-todas");
+    const borrar = document.querySelector(".borrarTareas");
 
     const urlTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks/";
 
-
-    document.querySelector("#logout").onclick = () => {
-        sessionStorage.clear();
-        window.location.href = "login.html";
-    }
-
-    boton.onclick = e => {
-        e.preventDefault();
-        agregarTodo();
-        actualizar();
-    }
-
-    borrar.onclick = e => {
-        e.preventDefault();
-        borrarTodas();
-    }
-
-    actualizar();
-
-
-    function actualizar() {
-        setTimeout(() => {
-            formulario.reset();
-            pedirTodos();
-            updateEventos();
-        }, 100);
-    }
-
-    function updateEventos() {
-        const botones = document.querySelectorAll('.not-done');
-        botones.forEach(nd => {
-            nd.addEventListener('click', () => {
-                const completed = nd.parentElement.parentElement.classList.contains("tareas-pendientes");
-                modificarTarea(nd.dataset.id, completed);
-            })
-        });
-
-    }
-
-    function borrarTodas() {
-        const botones = document.querySelectorAll('.not-done');
-        for (const boton of botones) {
-            borrarTarea(boton.dataset.id);
-        }
-        setTimeout(() => {
-            actualizar();
-        }, botones.length * 25);
-
-
-    }
-
-    function borrarTarea(id) {
-        fetch(urlTareas + id, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": sessionStorage.getItem('jwt')
-                }
-            })
-            .then(res => res.json())
-
-    }
-
-    function modificarTarea(id, completed) {
-        const data =
-            JSON.stringify({
-                completed: completed
-            })
-
-        fetch(urlTareas + id, {
-                method: "PUT",
-                body: data,
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": sessionStorage.getItem('jwt')
-                }
-            })
-            .then(res => res.json())
-            .then(pedirTodos);
-    }
+    pedirTodos();
 
     function pedirTodos() {
+
         fetch(urlTareas, {
                 method: "GET",
                 headers: {
@@ -121,27 +43,106 @@ window.addEventListener("load", () => {
             .then(updateEventos);
     }
 
+    function updateEventos() {
+        const botones = document.querySelectorAll('.not-done');
+        botones.forEach(nd => {
+            nd.addEventListener('click', () => {
+                const id = nd.dataset.id;
+                const completed = nd.parentElement.parentElement.classList.contains("tareas-pendientes");
+                modificarTarea(id, completed);
+            });
+        });
 
-    function agregarTodo() {
-        const desc = descripcion.value.trim();
-        if (!desc.length) return;
+    }
 
-        const data = {
-            description: desc
-        }
-
-        fetch(urlTareas, {
-                method: "POST",
+    function modificarTarea(id, completed) {
+        fetch(urlTareas + id, {
+                method: "PUT",
+                body: JSON.stringify({
+                    completed: completed
+                }),
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": sessionStorage.getItem('jwt')
-                },
-                body: JSON.stringify(data)
+                }
+            })
+            .then(res => res.json())
+            .then(pedirTodos);
+    }
+
+    document.querySelector("#logout").onclick = () => {
+        let confirmacion = confirm("¿Desea cerrar sesion?")
+        if (confirmacion) {
+            sessionStorage.clear();
+            window.location.href = "login.html";
+        }
+    }
+
+    boton.onclick = e => {
+        e.preventDefault();
+        agregarTodo();
+    }
+
+    function agregarTodo() {
+        const description = nuevaTarea.value.trim();
+        if (!description.length) return;
+
+        const settings = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": sessionStorage.getItem('jwt')
+            },
+            body: JSON.stringify({
+                description: description
+            })
+        }
+
+        fetch(urlTareas, settings)
+            .then(res => res.json())
+            .then(pedirTodos);
+    }
+
+    borrar.onclick = e => {
+        e.preventDefault();
+        borrarTodas();
+
+    }
+
+    function borrarTodas() {
+        const botones = document.querySelectorAll('.not-done');
+        for (const boton of botones) {
+            borrarTarea(boton.dataset.id);
+
+        }
+
+        setTimeout(() => {
+            pedirTodos();
+        }, botones.length * 80);
+    }
+
+    function borrarTarea(id) {
+        fetch(urlTareas + id, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": sessionStorage.getItem('jwt')
+                }
             })
             .then(res => res.json());
     }
 
-    async function renderizarTodos(tareas) {
+    function renderizarTodos(tareas) {
+        formulario.reset();
+
+        //falso esqueleto que simula lo que va a ocupar el contenido
+        const skeleton = document.querySelector('#skeleton');
+        //lo borramos antes de cargar el contenido
+        if (skeleton) {
+            skeleton.remove();
+        }
+
+
         tareasPendientes.innerHTML = "";
         tareasTerminadas.innerHTML = "";
 
@@ -161,6 +162,7 @@ window.addEventListener("load", () => {
         <p class="nombre">${todo.description}</p>
         <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
+        <div class="remove"></div>
         </li>
         `;
     }
@@ -172,6 +174,7 @@ window.addEventListener("load", () => {
         <p class="nombre">${todo.description}</p>
         <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
+        <div class="remove"></div>
         </li>
         `;
     }
