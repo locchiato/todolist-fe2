@@ -18,8 +18,6 @@ body {
     background-image: var(--mi-cielo);
     background-attachment: fixed;
     background-position: center;
-    background-size: auto center;
-    min-height: 100vh;
 }
 
 button {

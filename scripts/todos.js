@@ -1,70 +1,115 @@
 if (!sessionStorage.getItem("jwt")) {
     window.location.href = "login.html";
 }
+const urlUsuario = "https://ctd-todo-api.herokuapp.com/v1/users/getMe";
+
+fetch(urlUsuario, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": sessionStorage.getItem('jwt')
+        }
+    })
+    .then(res => res.json())
+    .then(user => {
+        document.querySelector(".user-info p").innerHTML = `${user.firstName} ${user.lastName}`;
+
+    })
+
 window.addEventListener("load", () => {
-    let misTodos = [];
-    let misTodosDone = [];
 
     const tareasPendientes = document.querySelector(".tareas-pendientes");
     const tareasTerminadas = document.querySelector(".tareas-terminadas");
     const descripcion = document.querySelector(".nueva-tarea input");
     const formulario = document.querySelector('.nueva-tarea');
     const boton = document.querySelector("#agregarTarea");
+    const borrar = document.querySelector(".borrar-todas");
 
-    document.querySelector(".user-info p").innerHTML = sessionStorage.getItem('email').split('@')[0];
+    const urlTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks/";
+
 
     document.querySelector("#logout").onclick = () => {
         sessionStorage.clear();
         window.location.href = "login.html";
     }
 
-    Promise.resolve()
-        .then(pedirTodos)
-        .then(renderizarTodos)
-        .then(updateEventos);
-
-    boton.onclick = (e) => {
+    boton.onclick = e => {
         e.preventDefault();
-        Promise.resolve()
-            .then(agregarTodo)
-            .then(renderizarTodos)
-            .then(updateEventos);
+        agregarTodo();
+        actualizar();
+    }
 
+    borrar.onclick = e => {
+        e.preventDefault();
+        borrarTodas();
+    }
+
+    actualizar();
+
+
+    function actualizar() {
         setTimeout(() => {
-            formulario.reset()
+            formulario.reset();
+            pedirTodos();
+            updateEventos();
         }, 100);
     }
 
     function updateEventos() {
-        const ndPendientes = document.querySelectorAll('.tareas-pendientes .not-done');
-        ndPendientes.forEach(nd => {
-
-            // cuando se ejecuta el siguiente evento cambia la tarea a la otra lista
+        const botones = document.querySelectorAll('.not-done');
+        botones.forEach(nd => {
             nd.addEventListener('click', () => {
-                tareasTerminadas.appendChild(nd.parentElement);
-                // llamo denuevo a updateEventos() para que la nueva tarea tenga el evento de click
-                updateEventos();
-
-            })
-        });
-
-        const ndTerminadas = document.querySelectorAll('.tareas-terminadas .not-done');
-        ndTerminadas.forEach(nd => {
-
-            // cuando se ejecuta el siguiente evento cambia la tarea a la otra lista
-            nd.addEventListener('click', () => {
-                tareasPendientes.appendChild(nd.parentElement);
-                // llamo denuevo a updateEventos() para que la nueva tarea tenga el evento de click
-                updateEventos();
+                const completed = nd.parentElement.parentElement.classList.contains("tareas-pendientes");
+                modificarTarea(nd.dataset.id, completed);
             })
         });
 
     }
 
-    function pedirTodos() {
-        const urlPedirTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks";
+    function borrarTodas() {
+        const botones = document.querySelectorAll('.not-done');
+        for (const boton of botones) {
+            borrarTarea(boton.dataset.id);
+        }
+        setTimeout(() => {
+            actualizar();
+        }, botones.length * 25);
 
-        fetch(urlPedirTareas, {
+
+    }
+
+    function borrarTarea(id) {
+        fetch(urlTareas + id, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": sessionStorage.getItem('jwt')
+                }
+            })
+            .then(res => res.json())
+
+    }
+
+    function modificarTarea(id, completed) {
+        const data =
+            JSON.stringify({
+                completed: completed
+            })
+
+        fetch(urlTareas + id, {
+                method: "PUT",
+                body: data,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": sessionStorage.getItem('jwt')
+                }
+            })
+            .then(res => res.json())
+            .then(pedirTodos);
+    }
+
+    function pedirTodos() {
+        fetch(urlTareas, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,68 +117,49 @@ window.addEventListener("load", () => {
                 }
             })
             .then(res => res.json())
-            .then(manejarRespuesta);
+            .then(renderizarTodos)
+            .then(updateEventos);
     }
 
-    function manejarRespuesta(respuesta) {
-        respuesta.forEach(tarea => {
-            const date = new Date(tarea.createdAt)
-            const todo = {
-                description: tarea.description,
-                createdAt: date.toLocaleDateString()
-            }
-            tarea.completed ? misTodosDone.push(todo) : misTodos.push(todo);
-        })
-
-    }
 
     function agregarTodo() {
-        if (descripcion.value.trim().length)
-            misTodos.push(getTodo());
+        const desc = descripcion.value.trim();
+        if (!desc.length) return;
+
+        const data = {
+            description: desc
+        }
+
+        fetch(urlTareas, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": sessionStorage.getItem('jwt')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json());
     }
 
-    function getTodo() {
-        const date = new Date();
-        return {
-            description: descripcion.value.trim(),
-            createdAt: date.toLocaleDateString()
-        };
-    }
-    /* 
-        function get(part, date) {
-            const formats = [
-                { day: "2-digit" },
-                { month: "2-digit" },
-                { year: "2-digit" }
-            ];
-            return new Intl.DateTimeFormat("es", formats[part]).format(date);
-        } */
-
-    function renderizarTodos() {
-        renderizarPendientes()
-        renderizarTerminadas()
-    }
-
-    function renderizarPendientes() {
+    async function renderizarTodos(tareas) {
         tareasPendientes.innerHTML = "";
-        misTodos.forEach((todo) => {
-            addPendiente(todo)
-        });
+        tareasTerminadas.innerHTML = "";
+
+        tareas.forEach(tarea => {
+            tarea.completed ? addTerminada(tarea) : addPendiente(tarea);
+        })
     }
 
-    function renderizarTerminadas() {
-        tareasTerminadas.innerHTML = "";
-        misTodosDone.forEach((todo) => {
-            addTerminada(todo)
-        });
+    function normFecha(fecha) {
+        return (new Date(fecha)).toLocaleDateString();
     }
 
     function addPendiente(todo) {
         tareasPendientes.innerHTML += `<li class="tarea">
-        <div class="not-done"></div>
+        <div class="not-done" data-id="${todo.id}"></div>
         <div class="descripcion">
         <p class="nombre">${todo.description}</p>
-        <p class="timestamp">${todo.createdAt}</p>
+        <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
         </li>
         `;
@@ -141,10 +167,10 @@ window.addEventListener("load", () => {
 
     function addTerminada(todo) {
         tareasTerminadas.innerHTML += `<li class="tarea">
-        <div class="not-done"></div>
+        <div class="not-done" data-id="${todo.id}"></div>
         <div class="descripcion">
         <p class="nombre">${todo.description}</p>
-        <p class="timestamp">Creada: ${todo.createdAt}</p>
+        <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
         </li>
         `;

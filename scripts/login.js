@@ -30,7 +30,6 @@ window.addEventListener("load", function() {
             .then(function(responseAPI) {
                 if (responseAPI.jwt) {
                     sessionStorage.setItem("jwt", responseAPI.jwt);
-                    sessionStorage.setItem("email", emailUsuario);
                     window.location.href = "index.html";
                 } else {
                     alert(responseAPI);
