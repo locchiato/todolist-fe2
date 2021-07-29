@@ -45,7 +45,7 @@ window.onload = function() {
                 if (responseAPI.jwt) {
                     sessionStorage.setItem("jwt", responseAPI.jwt);
                     sessionStorage.setItem("email", usuario.email);
-                    window.location.href = "lista-tareas.html";
+                    window.location.href = "index.html";
                 } else {
                     alert(responseAPI);
                 }

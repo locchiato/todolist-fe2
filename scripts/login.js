@@ -1,5 +1,5 @@
 if (sessionStorage.getItem("jwt")) {
-    window.location.href = "lista-tareas.html";
+    window.location.href = "index.html";
 }
 
 window.addEventListener("load", function() {
@@ -31,7 +31,7 @@ window.addEventListener("load", function() {
                 if (responseAPI.jwt) {
                     sessionStorage.setItem("jwt", responseAPI.jwt);
                     sessionStorage.setItem("email", emailUsuario);
-                    window.location.href = "lista-tareas.html";
+                    window.location.href = "index.html";
                 } else {
                     alert(responseAPI);
                 }

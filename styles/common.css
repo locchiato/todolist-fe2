@@ -16,11 +16,14 @@
 
 body {
     background-image: var(--mi-cielo);
-    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 100%;
     min-height: 100vh;
 }
 
 button {
     border: none;
     border-radius: 3px;
+    cursor: pointer;
 }

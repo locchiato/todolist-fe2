@@ -2,40 +2,47 @@
 <html lang="es">
 
 <head>
-
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/login.css">
-    <script src="scripts/login.js"></script>
-    <title>Login - ToDo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="./styles/lista-tareas.css">
+    <script src="./scripts/todos.js"></script>
+    <title>ToDo</title>
 </head>
 
 <body>
-    <form method="POST" id="formLogin">
-        <h1>Login</h1>
+    <header>
+        <nav>
+            <a href="/">My ToDo's</a>
+            <a href="/" id="logout">Cerrar sesión</a>
+        </nav>
 
-        <label>
-      Email:
-      <input id="email" type="email">
-    </label>
-        <label>
-      Contraseña:
-      <input id="password" type="password">
-    </label>
-
-        <button type="submit">Iniciar Sesión</button>
-
-        <div>
-            <p>¿No tenés cuenta aún?</p>
-            <a class="crear-cuenta" href="register.html">Crear cuenta nueva</a>
+        <div class="user-info">
+            <p>username</p>
+            <div class="user-image"></div>
         </div>
+    </header>
 
-        <div class="form-footer">
-            <p>ToDo</p>
-        </div>
+
+    <form class="nueva-tarea">
+        <div class="not-done "></div>
+        <input type="text" placeholder="Nueva tarea">
+        <button id="agregarTarea">
+        <i class="fas fa-plus-circle agregar"></i>
+    </button>
     </form>
+
+
+    <ul class="tareas-pendientes">
+
+    </ul>
+
+    <h2 class="titulo-terminadas">Tareas terminadas</h2>
+    <ul class="tareas-terminadas">
+
+    </ul>
 
 </body>
 

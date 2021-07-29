@@ -12,7 +12,10 @@
 
 <body>
 
-    <form method="POST" id="formRegister">
+    <form id="formRegister">
+        <div class="form-header">
+            <p>ToDo</p>
+        </div>
         <h1>Nueva cuenta</h1>
 
         <label>
@@ -26,6 +29,11 @@
       <small id="small-lastName"></small>
     </label>
         <label>
+      Email:
+      <input id="email" type="email" name="email">
+      <small id="small-mail"></small>
+    </label>
+        <label>
       Contraseña:
       <input id="password" type="password" name="password">
       <small id="small-pass"></small>
@@ -35,20 +43,16 @@
       <input id="repassword" type="password" name="repassword">
       <small id="small-rePass"></small>
     </label>
-        <label>
-      Email:
-      <input id="email" type="email" name="email">
-      <small id="small-mail"></small>
-    </label>
 
         <button type="submit">Crear Cuenta</button>
 
-        <div class="form-footer">
-            <p>ToDo</p>
-        </div>
-    </form>
 
-    <script src="scripts/register.js"></script>
+    </form>
+    <div class="ingresarA">
+        <a class="" href="login.html">¿Ya tiene una cuenta? Ingrese aquí</a>
+    </div>
+    <script src="./scripts/register.js"></script>
+
 </body>
 
 </html>
