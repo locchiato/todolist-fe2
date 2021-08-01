@@ -6,6 +6,7 @@ window.addEventListener("load", function() {
     const formLogin = document.querySelector("#formLogin");
     const inputEmail = document.querySelector("#email");
     const inputPassword = document.querySelector("#password");
+    const urlLogin = "https://ctd-todo-api.herokuapp.com/v1/users/login";
 
     formLogin.addEventListener("submit", function(event) {
         event.preventDefault();
@@ -14,7 +15,6 @@ window.addEventListener("load", function() {
 
 
     function iniciarSesion(emailUsuario, passwordUsuario) {
-        const urlLogin = "https://ctd-todo-api.herokuapp.com/v1/users/login";
         const datos = {
             email: emailUsuario,
             password: passwordUsuario

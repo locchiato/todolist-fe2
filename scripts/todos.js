@@ -23,9 +23,14 @@ window.addEventListener("load", () => {
     const nuevaTarea = document.querySelector(".nueva-tarea input");
     const formulario = document.querySelector('.nueva-tarea');
     const boton = document.querySelector("#agregarTarea");
-    const borrar = document.querySelector(".borrarTareas");
 
     const urlTareas = "https://ctd-todo-api.herokuapp.com/v1/tasks/";
+
+
+    boton.onclick = e => {
+        e.preventDefault();
+        agregarTodo();
+    }
 
     pedirTodos();
 
@@ -44,8 +49,8 @@ window.addEventListener("load", () => {
     }
 
     function updateEventos() {
-        const botones = document.querySelectorAll('.not-done');
-        botones.forEach(nd => {
+        const todosLosCompletar = document.querySelectorAll('.not-done');
+        todosLosCompletar.forEach(nd => {
             nd.addEventListener('click', () => {
                 const id = nd.dataset.id;
                 const completed = nd.parentElement.parentElement.classList.contains("tareas-pendientes");
@@ -53,6 +58,28 @@ window.addEventListener("load", () => {
             });
         });
 
+        const todosLosBorrar = document.querySelectorAll('.remove');
+        todosLosBorrar.forEach(rem => {
+            rem.onclick = e => {
+                const id = rem.dataset.id;
+                borrarTarea(id);
+
+            }
+        })
+
+
+    }
+
+    function borrarTarea(id) {
+        fetch(urlTareas + id, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": sessionStorage.getItem('jwt')
+                }
+            })
+            .then(res => res.json())
+            .then(pedirTodos);
     }
 
     function modificarTarea(id, completed) {
@@ -78,11 +105,6 @@ window.addEventListener("load", () => {
         }
     }
 
-    boton.onclick = e => {
-        e.preventDefault();
-        agregarTodo();
-    }
-
     function agregarTodo() {
         const description = nuevaTarea.value.trim();
         if (!description.length) return;
@@ -103,34 +125,7 @@ window.addEventListener("load", () => {
             .then(pedirTodos);
     }
 
-    borrar.onclick = e => {
-        e.preventDefault();
-        borrarTodas();
 
-    }
-
-    function borrarTodas() {
-        const botones = document.querySelectorAll('.not-done');
-        for (const boton of botones) {
-            borrarTarea(boton.dataset.id);
-
-        }
-
-        setTimeout(() => {
-            pedirTodos();
-        }, botones.length * 80);
-    }
-
-    function borrarTarea(id) {
-        fetch(urlTareas + id, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": sessionStorage.getItem('jwt')
-                }
-            })
-            .then(res => res.json());
-    }
 
     function renderizarTodos(tareas) {
         formulario.reset();
@@ -157,24 +152,32 @@ window.addEventListener("load", () => {
 
     function addPendiente(todo) {
         tareasPendientes.innerHTML += `<li class="tarea">
-        <div class="not-done" data-id="${todo.id}"></div>
+        <div class="not-done" data-id="${todo.id}">
+        <i class="fas fa-check hecho"></i>
+        </div>
         <div class="descripcion">
         <p class="nombre">${todo.description}</p>
         <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
-        <div class="remove"></div>
+        <div class="remove" data-id="${todo.id}">
+        <i class="far fa-trash-alt tacho"></i>
+        </div>
         </li>
         `;
     }
 
     function addTerminada(todo) {
         tareasTerminadas.innerHTML += `<li class="tarea">
-        <div class="not-done" data-id="${todo.id}"></div>
+        <div class="not-done" data-id="${todo.id}">
+        <i class="fas fa-times hecho"></i>
+        </div>
         <div class="descripcion">
         <p class="nombre">${todo.description}</p>
         <p class="timestamp">${normFecha(todo.createdAt)}</p>
         </div>
-        <div class="remove"></div>
+        <div class="remove" data-id="${todo.id}">
+        <i class="far fa-trash-alt tacho"></i>
+        </div>
         </li>
         `;
     }

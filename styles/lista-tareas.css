@@ -111,7 +111,7 @@ a:hover {
 }
 
 .not-done,
-.borrarTareas {
+#todasTerminadas {
     width: 2em;
     height: 2em;
     background-color: var(--bg-form);
@@ -279,4 +279,16 @@ a:hover {
     100% {
         opacity: 0.8;
     }
+}
+
+.remove,
+.not-done {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tacho,
+.hecho {
+    color: var(--primary);
 }
